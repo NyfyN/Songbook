@@ -1,38 +1,118 @@
-LoginForm.css
 *{
-    background-color: #0056b3;
+  background-color: #000;
+  color: #f00b51; 
+  font-family: 'Afacad';
+  margin: 0 auto;
+  padding: 0;
+}
+
+.login-form.mt-5.container {
+  width: 35%;
+  /* height: 100%; */
+}
+
+/* .alert{
+  position: fixed !important;
+  top: 90%;
+  left: 50px;
+  opacity: 0;
+} */
+
+.alert {
+  position: fixed !important;
+  top: 90%;
+  left: 50px;
+  transition: opacity 0.5s ease-in, transform 0.5s ease-in;  /* Przejścia */
+}
+
+.alert.show {
+  transition: 1s ease-in-out;
 }
 .login-form {
-  max-width: 400px;
   margin: auto;
+  padding: 10px;
+  background: linear-gradient(180deg, #f00b51, #7a0061);
+  border-radius: 43px;
+  text-align: center;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.login-form > .content {
+  background: #000;
+  border-radius: 33px;
   padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  height: 100%;
+  top: -50px;
 }
 
 .login-form input {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: none;
+  font-size: 36px;
+  border-bottom: 2px solid #f00b51;
+  background: transparent;
+  color: #fff;
+  outline: none;
+  
+}
+
+.form-control:focus{
+  color: #fff !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.login-form input:focus{
+  background: transparent;
+  
+}
+
+.login-form input::placeholder {
+  background: linear-gradient(180deg, #f00b51, #7a0061);
+  background-clip: text;
+  color: transparent;
+  font-size: 35px;
 }
 
 .login-form button {
-  width: 100%;
+  width: 50%;
   padding: 10px;
-  margin: 200px;
-  background-color: #007bff;
+  background: linear-gradient(90deg, #f00b51, #7a0061);
   border: none;
   color: white;
-  border-radius: 4px;
+  border-radius: 10px;
   cursor: pointer;
+  margin-top: 20px;
+  font-size: 47px;
 }
-
+.logo > img{
+  height: 55%;
+  width: 55%;
+}
 .login-form button:hover {
-  background-color: #0056b3;
+  background: linear-gradient(90deg, #7a0061, #f00b51);
 }
 
-.button {
-  margin-top: 10px;
+.login-form .forgot-password, .login-form .sign-up {
+  color: #f00b51;
+}
+
+.forgot-password, .sign-up, p{
+  font-size: 19px;
+}
+
+.forgot-password{
+  padding-top: -50px;
+}
+
+p{
+  padding: 0;
+  margin: 0;
+}
+
+.login-form .forgot-password:hover, .login-form .sign-up:hover {
+  text-decoration: underline;
 }

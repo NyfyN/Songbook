@@ -12,7 +12,6 @@ const LoginForm = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            // Wysyłamy dane na backend
             const response = await axios.post('http://localhost:8000/logreg/sign_in/', {
                 username,
                 password,
@@ -22,48 +21,57 @@ const LoginForm = () => {
                 }
             });
 
-            // Sprawdzamy, czy odpowiedź jest prawidłowa
             console.log("Response data:", response.data);
-
-            // Ustawiamy komunikat sukcesu
             setSuccess('Login successful');
             setError('');
-
         } catch (err) {
-            console.error("Error during login:", err); // Zaloguj błąd
+            console.error("Error during login:", err);
             setSuccess('');
             setError('Invalid username or password');
         }
     };
 
     return (
-        <Container className="mt-5">
-            <h2>Login</h2>
-            {success && <Alert variant="success">{success}</Alert>}
-            {error && <Alert variant="danger">{error}</Alert>}
-            <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="formBasicUsername">
-                    <Form.Label>Username</Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder="Enter username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                </Form.Group>
-                <Form.Group controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                        type="password"
-                        placeholder="Enter password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </Form.Group>
-                <Button variant="primary" className="button" type="submit" >
-                    Sign In
-                </Button>
-            </Form>
+        
+        <Container className="login-form mt-5">
+            <div className="content">
+                <div className="logo">
+                    <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="HarmonyHub" />
+                </div>
+                {success && <Alert variant="success">{success}</Alert>}
+                {error && <Alert variant="danger">{error}</Alert>}
+                <Form onSubmit={handleSubmit}>
+                    <Form.Group controlId="formBasicUsername">
+                        <Form.Control
+                            type="text"
+                            placeholder="Login"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                    </Form.Group>
+                    <Form.Group controlId="formBasicPassword">
+                        <Form.Control
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </Form.Group>
+                    <Button className="button" type="submit">
+                        Sign In!
+                    </Button>
+                </Form>
+                <div>
+                    <a href="/" className="forgot-password">Forgot your password?</a>
+                    <p>
+                        Don't have an account yet? &nbsp;
+                        <a href="/register" className="sign-up">
+                            Sign up here!
+                        </a>
+                    </p>
+                    
+                </div>
+        </div>
         </Container>
     );
 };

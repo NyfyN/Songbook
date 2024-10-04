@@ -1,9 +1,10 @@
 .App {
   text-align: center;
+  font-family: 'Afacad';
 }
 
 * body{
-  background-color: #000
+  background-color: #000;
 }
 
 .App-logo {

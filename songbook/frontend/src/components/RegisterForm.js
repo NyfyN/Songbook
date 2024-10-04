@@ -58,7 +58,7 @@ const RegisterForm = () => {
             {error && <Alert variant="danger">{error}</Alert>}
             <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formBasicUsername">
-                    <Form.Label>Username</Form.Label>
+                    <Form.Label>Login</Form.Label>
                     <Form.Control
                         type="text"
                         placeholder="Enter username"
@@ -66,15 +66,7 @@ const RegisterForm = () => {
                         onChange={(e) => setUsername(e.target.value)}
                     />
                 </Form.Group>
-                <Form.Group controlId="formBasicEmail">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control
-                        type="email"
-                        placeholder="Enter email"
-                        value={e_mail}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </Form.Group>
+                
                 <Form.Group controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
                     <Form.Control
@@ -84,6 +76,7 @@ const RegisterForm = () => {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </Form.Group>
+
                 <Form.Group controlId="formBasicConfirmPassword">
                     <Form.Label>Confirm Password</Form.Label>
                     <Form.Control
@@ -92,6 +85,16 @@ const RegisterForm = () => {
                         value={confirm_password}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     />
+
+                <Form.Group controlId="formBasicEmail">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                        type="email"
+                        placeholder="Enter email"
+                        value={e_mail}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </Form.Group>
                 </Form.Group>
                 <Button variant="primary" className="button" type="submit">
                     Register
