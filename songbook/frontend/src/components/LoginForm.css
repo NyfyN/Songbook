@@ -8,55 +8,56 @@
 
 .login-form.mt-5.container {
   width: 35%;
-  /* height: 100%; */
+  margin-top: 1.5rem !important;
 }
 
-/* .alert{
+alert {
   position: fixed !important;
   top: 90%;
-  left: 50px;
-  opacity: 0;
-} */
-
-.alert {
-  position: fixed !important;
-  top: 90%;
-  left: 50px;
-  transition: opacity 0.5s ease-in, transform 0.5s ease-in;  /* Przejścia */
+  left: 3.125rem;
+  transition: opacity 0.5s ease-in, transform 0.5s ease-in;
 }
 
-.alert.show {
+alert.show {
   transition: 1s ease-in-out;
 }
+
 .login-form {
   margin: auto;
-  padding: 10px;
+  padding: 0.625rem;
   background: linear-gradient(180deg, #f00b51, #7a0061);
-  border-radius: 43px;
+  border-radius: 2.688rem;
   text-align: center;
   position: relative;
-  margin-bottom: 30px;
+  margin-bottom: 1.875rem;
+  opacity: 0;
+  transform: translateY(-3.125rem); 
+  transition: opacity 1s ease-in-out, 
+  transform 1s ease-in-out;
 }
 
+.login-form.show{
+    opacity: 1;
+    transform: translateY(0); 
+}
 .login-form > .content {
   background: #000;
-  border-radius: 33px;
-  padding: 20px;
+  border-radius: 2.063rem;
+  padding: 1.25rem;
   height: 100%;
-  top: -50px;
+  top: -3.125rem;
 }
 
 .login-form input {
   width: 100%;
-  padding: 10px;
-  margin: 10px 0;
+  padding: 0.625rem;
+  margin: 0.625rem 0;
   border: none;
-  font-size: 36px;
-  border-bottom: 2px solid #f00b51;
+  font-size: 2.25rem;
+  border-bottom: 0.125rem solid #f00b51;
   background: transparent;
   color: #fff;
   outline: none;
-  
 }
 
 .form-control:focus{
@@ -67,26 +68,25 @@
 
 .login-form input:focus{
   background: transparent;
-  
 }
 
 .login-form input::placeholder {
   background: linear-gradient(180deg, #f00b51, #7a0061);
   background-clip: text;
   color: transparent;
-  font-size: 35px;
+  font-size: 2.188rem;
 }
 
 .login-form button {
   width: 50%;
-  padding: 10px;
+  padding: 0.625rem;
   background: linear-gradient(90deg, #f00b51, #7a0061);
   border: none;
   color: white;
-  border-radius: 10px;
+  border-radius: 0.625rem;
   cursor: pointer;
-  margin-top: 20px;
-  font-size: 47px;
+  margin-top: 1.25rem;
+  font-size: 3rem;
 }
 .logo > img{
   height: 55%;
@@ -101,11 +101,11 @@
 }
 
 .forgot-password, .sign-up, p{
-  font-size: 19px;
+  font-size: 1.1rem;
 }
 
 .forgot-password{
-  padding-top: -50px;
+  padding-top: -3.125rem;
 }
 
 p{
@@ -116,3 +116,4 @@ p{
 .login-form .forgot-password:hover, .login-form .sign-up:hover {
   text-decoration: underline;
 }
+

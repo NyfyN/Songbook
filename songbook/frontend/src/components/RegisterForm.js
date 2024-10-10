@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Button, Container, Alert } from 'react-bootstrap';
 import axios from 'axios';
+import './RegisterForm.css';
 
 const RegisterForm = () => {
     const [username, setUsername] = useState("");
@@ -9,6 +10,13 @@ const RegisterForm = () => {
     const [e_mail, setEmail] = useState("");
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const [isVisible, setIsVisible]= useState(false);
+
+    useEffect(()=> {
+        setTimeout(()=>{
+            setIsVisible(true);
+        }, 10);
+    });
 
     const handleSubmit = async (event) =>{
         event.preventDefault();
@@ -52,33 +60,36 @@ const RegisterForm = () => {
         }
     };
     return (
-        <Container className="mt-5">
-            <h2>Register</h2>
-            {success && <Alert variant="success">{success}</Alert>}
-            {error && <Alert variant="danger">{error}</Alert>}
-            <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="formBasicUsername">
-                    <Form.Label>Login</Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder="Enter username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                </Form.Group>
-                
+        <Container className={`register-form mt-5 container ${isVisible ? 'show' : ''}`}>
+            <div class="content">
+                <div className="register-logo">
+                    <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="HarmonyHub" />
+                    <span>
+                        <p>Create your</p>
+                        <p>own songbook!</p>
+                    </span>
+                </div>
+                {success && <Alert variant="success">{success}</Alert>}
+                {error && <Alert variant="danger">{error}</Alert>}
+                <Form onSubmit={handleSubmit}>
+                    <Form.Group controlId="formBasicUsername">
+                        <Form.Control
+                            type="text"
+                            placeholder="Login"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                    </Form.Group>
                 <Form.Group controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
                     <Form.Control
                         type="password"
-                        placeholder="Enter password"
+                        placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </Form.Group>
 
                 <Form.Group controlId="formBasicConfirmPassword">
-                    <Form.Label>Confirm Password</Form.Label>
                     <Form.Control
                         type="password"
                         placeholder="Confirm password"
@@ -87,19 +98,25 @@ const RegisterForm = () => {
                     />
 
                 <Form.Group controlId="formBasicEmail">
-                    <Form.Label>Email</Form.Label>
                     <Form.Control
                         type="email"
-                        placeholder="Enter email"
+                        placeholder="E-mail"
                         value={e_mail}
                         onChange={(e) => setEmail(e.target.value)}
                     />
                 </Form.Group>
                 </Form.Group>
                 <Button variant="primary" className="button" type="submit">
-                    Register
+                    Sign Up!
                 </Button>
             </Form>
+                <div>
+                    <span>Do you already have an account? &nbsp;</span>
+                    <a href='/' className="sign-up">
+                        Sign in here!
+                    </a>
+                </div>
+            </div>
         </Container>
     );
 };

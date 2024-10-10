@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Button, Container, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import './LoginForm.css';
@@ -8,6 +8,13 @@ const LoginForm = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        setTimeout(()=>{
+            setIsVisible(true);
+        }, 10);
+    });
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -33,7 +40,7 @@ const LoginForm = () => {
 
     return (
         
-        <Container className="login-form mt-5">
+        <Container className={`login-form mt-5 ${isVisible ? 'show' : ''}`}>
             <div className="content">
                 <div className="logo">
                     <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="HarmonyHub" />
