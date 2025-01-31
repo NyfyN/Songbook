@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button, Container, Alert } from 'react-bootstrap';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import './RegisterForm.css';
 
@@ -11,6 +12,8 @@ const RegisterForm = () => {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [isVisible, setIsVisible]= useState(false);
+
+    const navigate = useNavigate();
 
     useEffect(()=> {
         setTimeout(()=>{
@@ -53,6 +56,10 @@ const RegisterForm = () => {
             console.log('response data:', response.data);
             setSuccess('Register successful');
             setError('');
+
+            setTimeout(() => {
+                navigate('/');
+            }, 5000)
         }catch (err){
             console.log('error:', err);
             setSuccess('');

@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Form, Button, Container, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import './LoginForm.css';
+import { useNavigate } from "react-router-dom";
+
+axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
+axios.defaults.xsrfCookieName = "csrftoken";
 
 const LoginForm = () => {
     const [username, setUsername] = useState("");
@@ -9,12 +13,13 @@ const LoginForm = () => {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [isVisible, setIsVisible] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        setTimeout(()=>{
+        setTimeout(() => {
             setIsVisible(true);
         }, 10);
-    });
+    }, []);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -25,12 +30,16 @@ const LoginForm = () => {
             }, {
                 headers: {
                     'Content-Type': 'application/json'
-                }
+                },
+                withCredentials: true  // Ensure cookies are sent with the request
             });
 
             console.log("Response data:", response.data);
             setSuccess('Login successful');
             setError('');
+            setTimeout(() => {
+                navigate('/main');
+            }, 1000);
         } catch (err) {
             console.error("Error during login:", err);
             setSuccess('');
@@ -39,7 +48,6 @@ const LoginForm = () => {
     };
 
     return (
-        
         <Container className={`login-form mt-5 ${isVisible ? 'show' : ''}`}>
             <div className="content">
                 <div className="logo">
@@ -76,9 +84,8 @@ const LoginForm = () => {
                             Sign up here!
                         </a>
                     </p>
-                    
                 </div>
-        </div>
+            </div>
         </Container>
     );
 };

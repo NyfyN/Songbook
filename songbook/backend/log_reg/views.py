@@ -5,21 +5,34 @@ from rest_framework.decorators import api_view
 from .models import User
 from .serializers import UserSerializer
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import login
+from django.utils import timezone
 # Create your views here.
+
+
+@api_view(['GET'])
+def check_session(request):
+    session_key = request.COOKIES.get('sessionid')
+    if session_key:
+        return Response({'sessionid': session_key})
+    return Response({'error': 'No sessionid found'}, status=400)
+
+@api_view(['POST'])
+def test_api(request):
+    print(request)
+    return Response({"message": "Test API works!"}, status=status.HTTP_200_OK)
 
 
 @csrf_exempt
 @api_view(['POST'])
 def sign_up(request):
-  # Zobacz, co jest przesyłane
-
     username = request.data.get('username')
     e_mail = request.data.get('e_mail')
     password = request.data.get('password')
     confirm_password = request.data.get('confirm_password')
     print("Received data: ", request.data)
 
-    # Debugowanie
+    # Debugging
     if not confirm_password:
         return Response({"error": "Confirm password is required"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -30,12 +43,8 @@ def sign_up(request):
     if password != confirm_password:
         return Response({"error": "Password and confirm password do not match!"}, status=status.HTTP_400_BAD_REQUEST)
 
-    # Hashowanie hasła
-    # hashed_passwd = make_password(password)
-
-    # Zaktualizuj dane żądania
+    # * Update request data
     user_data = request.data.copy()
-    # user_data['password'] = hashed_passwd
 
     print("User data before serialization:", user_data)
 
@@ -43,26 +52,38 @@ def sign_up(request):
     if serializer.is_valid():
         print("Validated data:", serializer.validated_data)
         serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response({
+            "message": "User created successfully",
+            "redirect_url": "/login"
+        }, status=status.HTTP_201_CREATED)
     print("Serializer errors:", serializer.errors)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@csrf_exempt
 @api_view(['POST'])
 def sign_in(request):
-    if request.method == "POST":
-        username = request.data.get('username')
-        password = request.data.get('password')
-        print("USERNAME: ", username)
+    username = request.data.get('username')
+    password = request.data.get('password')
 
-        try:
-            user = User.objects.get(username=username)
-            if check_password(password, user.password):
-                serializer = UserSerializer(user)
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            else:
-                return Response({"error": "Invalid password1"}, status=status.HTTP_400_BAD_REQUEST)
+    if not username or not password:
+        return Response({"error": "Both username and password are required"},
+                        status=status.HTTP_400_BAD_REQUEST)
 
-        except User.DoesNotExist:
-            return Response({"error": "User does not exist!"}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        user = User.objects.get(username=username)
+        
+        if check_password(password, user.password):
+            login(request, user)
+            user.last_login = timezone.now()
+            user.save()
+            serializer = UserSerializer(user)
+            session_key = request.COOKIES.get('sessionid')
+            print("session_key: ", session_key)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "Invalid password"}, status=status.HTTP_400_BAD_REQUEST)
+
+    except User.DoesNotExist:
+        return Response({"error": "User does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+
+

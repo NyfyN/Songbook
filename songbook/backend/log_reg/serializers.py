@@ -8,7 +8,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'e_mail', 'password', 'confirm_password']
+        fields = ['username', 'e_mail', 'password',
+                  'confirm_password', 'last_login']
 
     def validate(self, data):
         # Walidacja, aby upewnić się, że hasła się zgadzają

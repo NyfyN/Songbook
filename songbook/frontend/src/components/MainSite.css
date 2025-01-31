@@ -1,0 +1,139 @@
+*{
+    background-color: #000;
+    color: #f00b51; 
+    font-family: 'Afacad';
+    margin: 0 auto;
+    padding: 0;
+  }
+
+.side-bar{
+    height: 100%;
+    width: 10rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    position: fixed;
+    top:0;
+    left:0;
+    background: #f00b51;;
+  }
+.nav.flex-column{
+    left: -7rem;
+    width: 100%;
+}
+
+.nav.flex-column > li{
+    width: 100%;
+    height: 10rem;
+    background-color: #f00b51;
+}
+
+.nav.flex-column > li > a{
+    color: #000;
+    font-size: 1.5rem;
+}
+
+.main-logo, .logout-btn{
+    background:#7a0061 ;
+    width: 100%;
+    height: 10rem;
+}
+
+.main-grid {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;  /* Równe odstępy między folderami */
+    align-items: center;
+    flex-wrap: wrap;  /* Pozwala na zawijanie, jeśli nie zmieści się w jednym wierszu */
+    padding-left: 10rem;  /* Odstęp od side-bar */
+    padding-right: 2rem;  /* Odstęp od prawej strony */
+    gap: 1rem;  /* Odstęp między folderami */
+    /* max-width: calc(100% - 10rem);  Uwzględnienie side-bar */
+    box-sizing: border-box;
+}
+
+.folder {
+    width: calc((100% - 2rem) / 4);  /* Szerokość foldera */
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.folder .icon {
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%;  /* Zachowuje kwadratowy kształt */
+    background: #7a7a7a;  /* Możesz zmienić na odpowiedni kolor lub obraz */
+}
+
+.folder-name {
+    margin-top: 0.5rem;  /* Odstęp nad nazwą */
+    text-align: center;  /* Centruje tekst */
+    font-size: 1.2rem;   /* Możesz dostosować rozmiar czcionki */
+    color: #ffffff;      /* Kolor tekstu */
+}
+
+
+.add-folder-btn{
+    position: fixed !important;
+    width: 4rem !important;
+    height: 4rem !important;
+    font-size: 4rem !important;
+    background-color: #7a0061 !important;
+    color: #f00b51 !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    border: none !important;
+    right:1rem !important;
+    bottom:1rem !important;
+}
+
+.add-folder-btn > span{
+    background: transparent;
+    font-size: 4rem;
+}
+
+.modal{
+    background: rgba(0, 0, 0, 0.2) !important;
+}
+
+.modal-content{
+    background: rgba(0, 0, 0, 0.2) !important;
+    border: 0.25rem solid #7a0061 !important;
+    border-radius: 2.063rem !important;
+}
+
+.modal-header, .modal-body ,.modal-footer{
+    border: none !important;
+}
+
+.modal-title{
+    font-size: 3rem !important;
+}
+
+.modal-body > input{
+    width: 100% !important;
+    padding: 0.625rem !important;
+    margin: 0.625rem 0 !important;
+    border: none !important;
+    font-size: 2.25rem !important;
+    border-bottom: 0.125rem solid #f00b51 !important;
+    background: transparent !important;
+    color: #fff !important;
+    outline: none !important;
+}
+
+.modal-footer > .btn{
+    padding: 0.625rem !important;
+    background: linear-gradient(90deg, #f00b51, #7a0061) !important;
+    border: none !important;
+    color: white !important;
+    border-radius: 0.625rem !important;
+    cursor: pointer !important;
+    font-size: 1.5rem !important;
+}

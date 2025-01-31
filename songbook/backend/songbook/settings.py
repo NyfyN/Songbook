@@ -39,22 +39,48 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api',
     'log_reg',
+    'songs',
     'corsheaders',
     'rest_framework'
 ]
 
+# AUTH_USER_MODEL = 'logreg.User'
+
+
+LOGIN_URL = '/logreg/sign_in'
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 # Allow all origins for development purposes
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+
+
+# Ustawienia ciasteczek
+# Silnik sesji
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+SESSION_COOKIE_NAME = 'sessionid'  # Nazwa ciasteczka sesji
+# Sesja nie wygasa po zamknięciu przeglądarki
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_COOKIE_AGE = 1209600  # 2 tygodnie
+SESSION_COOKIE_SECURE = False  # Ustaw na True w przypadku użycia HTTPS
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SECURE = False  # Ustaw na 'None' w przypadku wielu domen
+
+
+SESSION_COOKIE_HTTPONLY = False
+CSRF_COOKIE_HTTPONLY = False
+
 
 ROOT_URLCONF = 'songbook.urls'
 
@@ -137,16 +163,20 @@ REST_FRAMEWORK = {
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Port, na którym działa aplikacja React
+    "http://localhost:8000",  # Port, na którym działa aplikacja Django
 ]
 
 CORS_ALLOW_HEADERS = [
-    'content-type',
-    'authorization',
-    'x-requested-with',
-    'accept',
-    'origin',
-    'accept-encoding',
-    'x-csrftoken',
+    'Authorization',
+    'Content-Type',
+    'X-Requested-With',
+    'Accept',
+    'Origin',
+    'X-CSRFToken',  # Jeśli używasz CSRF
+]
+
+CORS_EXPOSE_HEADERS = [
+    'Authorization',
 ]
 
 CORS_ALLOW_METHODS = [
@@ -158,4 +188,22 @@ CORS_ALLOW_METHODS = [
     'OPTIONS',
 ]
 
-CORS_ALLOW_CREDENTIALS = True
+
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'level': 'DEBUG',
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',
+#             'propagate': True,
+#         },
+#     },
+# }
