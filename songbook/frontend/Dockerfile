@@ -1,4 +1,4 @@
-FROM node:14
+FROM node:22
 
 # Set the working directory
 WORKDIR /app
@@ -7,13 +7,14 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm i -g pnpm
+RUN pnpm i
 
 # Copy the rest of the frontend code
 COPY . .
 
 # Build the React application
-RUN npm run build
+RUN pnpm run build
 
 # Serve the application
 CMD ["npx", "serve", "-s", "build"]
