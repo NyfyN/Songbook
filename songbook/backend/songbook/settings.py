@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'rest_framework'
 ]
 
-# AUTH_USER_MODEL = 'logreg.User'
+AUTH_USER_MODEL = 'log_reg.User'
 
 
 LOGIN_URL = '/logreg/sign_in'
@@ -67,14 +67,15 @@ CORS_ALLOW_CREDENTIALS = True
 
 # Ustawienia ciasteczek
 # Silnik sesji
-SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+# SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_NAME = 'sessionid'  # Nazwa ciasteczka sesji
 # Sesja nie wygasa po zamknięciu przeglądarki
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_AGE = 1209600  # 2 tygodnie
 SESSION_COOKIE_SECURE = False  # Ustaw na True w przypadku użycia HTTPS
-SESSION_COOKIE_SAMESITE = 'Lax'
-CSRF_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SAMESITE = None
+CSRF_COOKIE_SAMESITE = None
 CSRF_COOKIE_SECURE = False  # Ustaw na 'None' w przypadku wielu domen
 
 
@@ -166,6 +167,10 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",  # Port, na którym działa aplikacja Django
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+]
+
 CORS_ALLOW_HEADERS = [
     'Authorization',
     'Content-Type',
@@ -187,23 +192,3 @@ CORS_ALLOW_METHODS = [
     'PATCH',
     'OPTIONS',
 ]
-
-
-
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'handlers': {
-#         'console': {
-#             'level': 'DEBUG',
-#             'class': 'logging.StreamHandler',
-#         },
-#     },
-#     'loggers': {
-#         'django': {
-#             'handlers': ['console'],
-#             'level': 'DEBUG',
-#             'propagate': True,
-#         },
-#     },
-# }

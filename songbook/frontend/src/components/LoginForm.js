@@ -7,6 +7,12 @@ import { useNavigate } from "react-router-dom";
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
 
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
 const LoginForm = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -24,12 +30,14 @@ const LoginForm = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
+            const csrfToken = getCookie('csrftoken');
             const response = await axios.post('http://localhost:8000/logreg/sign_in/', {
                 username,
                 password,
             }, {
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
                 },
                 withCredentials: true  // Ensure cookies are sent with the request
             });
