@@ -59,7 +59,7 @@ const LoginForm = () => {
         <Container className={`login-form mt-5 ${isVisible ? 'show' : ''}`}>
             <div className="content">
                 <div className="logo">
-                    <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="HarmonyHub" />
+                    <img src={`/logo.png`} alt="HarmonyHub" />
                 </div>
                 {success && <Alert variant="success">{success}</Alert>}
                 {error && <Alert variant="danger">{error}</Alert>}

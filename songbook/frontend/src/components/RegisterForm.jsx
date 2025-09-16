@@ -70,7 +70,7 @@ const RegisterForm = () => {
         <Container className={`register-form mt-5 container ${isVisible ? 'show' : ''}`}>
             <div class="content">
                 <div className="register-logo">
-                    <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="HarmonyHub" />
+                    <img src={`/logo.png`} alt="HarmonyHub" />
                     <span>
                         <p>Create your</p>
                         <p>own songbook!</p>
