@@ -4,6 +4,23 @@ import axios from 'axios';  // Dodanie axios do obsługi requestów HTTP
 import './MainSite.css';
 
 const MainSite = () => {
+
+    const fetchFolders = async () => {
+        try {
+            const response = await axios.get('http://localhost:8000/main/get_tabs',
+                { withCredentials: true }
+            );
+            setFolders(response.data);
+        } catch (error) {
+            console.error('Błąd podczas pobierania folderów:', error);
+        }
+    };
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
     const [showModal, setShowModal] = useState(false);
     const [folderName, setFolderName] = useState('');  // Zmienna dla inputa
     const [folders, setFolders] = useState([]);  // Zmienna do przechowywania folderów
@@ -17,63 +34,52 @@ const MainSite = () => {
 
     const checkAuth = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/logreg/check_session/', {
-                withCredentials: true  // Ensure cookies are sent with the request
+            const csrfToken = getCookie('csrftoken');
+            const response = await axios.get('http://localhost:8000/main/is_authenticated/', {
+                withCredentials: true,  // Ensure cookies are sent with the request
+                headers: {
+                    'X-CSRFToken': csrfToken
+                }
             });
-            // return response.data.authenticated;
-            return true;
+            return response.data.authenticated;
+            // return true;
         } catch (error) {
             console.error('Błąd podczas sprawdzania autoryzacji:', error);
             return false;
         }
     };
 
-    const getCookie = (name) => {
-        const cookies = document.cookie.split(';');
-        for (let cookie of cookies) {
-            const [key, value] = cookie.trim().split('=');
-            if (key === name) {
-                return value;
-            }
-        }
-        return null; // Zwraca null, jeśli ciasteczko nie istnieje
-    };
-
-
-
-    const testSubmit = async (event) =>{
-        event.preventDefault();
-        const sessionId = getCookie('sessionid');
-        const csrfToken = getCookie('csrftoken');
-        console.log('Session ID:', sessionId);
-        console.log('CSRF Token:', csrfToken);
-    }
 
     // Funkcja obsługi dodania nowego folderu
     const handleSubmit = async (event) => {
         event.preventDefault();
         const isAuthenticated = await checkAuth();
+        const csrfToken = getCookie('csrftoken');
+
         if (!isAuthenticated) {
             alert("User not logged in. Redirecting to login page.");
             window.location.href = 'http://localhost:3000';  // Redirect to login page
             return;
         }
 
-        if (folderName.trim() === '') return;  // Jeśli nazwa jest pusta, nie wysyłaj requestu
+        if (folderName.trim() === '') {
+            alert("Folder name cannot be empty!");
+        };  // Jeśli nazwa jest pusta, nie wysyłaj requestu
 
         try {
-            console.log("AUTH:", isAuthenticated);
-            console.log("Folder name:", folderName);
             const response = await axios.post('http://localhost:8000/main/add_tab/', {
                 folderName,
             }, {
-                withCredentials: true
+                withCredentials: true,
+                headers: {
+                    'X-CSRFToken': csrfToken
+                }
             });
-            console.log("RESPONSE:",response.status);
+            console.log("RESPONSE:", response.status);
             if (response.status === 201) {
                 console.log('Folder added successfully:', response.data);
                 setFolderName('');  // Wyczyść pole tekstowe po zamknięciu
-                // fetchFolders();  // Odśwież listę folderów
+                fetchFolders();  // Odśwież listę folderów
             }
 
         } catch (error) {
@@ -85,19 +91,11 @@ const MainSite = () => {
 
     // Pobierz istniejące foldery z backendu po załadowaniu komponentu
     useEffect(() => {
-        const fetchFolders = async () => {
-            try {
-                const response = await axios.get('get_tabs/');
-                setFolders(response.data);
-            } catch (error) {
-                console.error('Błąd podczas pobierania folderów:', error);
-            }
-        };
-
         fetchFolders();
+        // fetchFolders();
     }, []);
 
-    return(
+    return (
         <Container>
             <div className="side-bar">
                 <div className="main-logo">
@@ -131,8 +129,8 @@ const MainSite = () => {
             </div>
 
             <Button variant='primary'
-                    className="add-folder-btn"
-                    onClick={handleShow}>
+                className="add-folder-btn"
+                onClick={handleShow}>
                 +
             </Button>
 
@@ -144,17 +142,17 @@ const MainSite = () => {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <input 
-                        type="text" 
-                        placeholder="Folder name" 
+                    <input
+                        type="text"
+                        placeholder="Folder name"
                         value={folderName}
                         onChange={(e) => setFolderName(e.target.value)}  // Aktualizacja stanu inputa
                     />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary"
-                            onClick={testSubmit}  // Wyślij dane na backend
-                            type="submit">
+                        onClick={handleSubmit}  // Wyślij dane na backend
+                        type="submit">
                         Add folder
                     </Button>
                 </Modal.Footer>

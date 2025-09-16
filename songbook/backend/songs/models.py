@@ -6,9 +6,9 @@ from django.contrib.auth.models import User
 
 
 class Tab(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    color = models.CharField(max_length=7)  # RRGGBB
+    color = models.CharField(max_length=7, default="#FFFFFF")  # RRGGBB
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

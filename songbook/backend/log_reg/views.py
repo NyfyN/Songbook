@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from .models import User
 from .serializers import UserSerializer
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import login
+from django.contrib.auth import authenticate, login
 from django.utils import timezone
 # Create your views here.
 
@@ -60,6 +60,7 @@ def sign_up(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@csrf_exempt
 @api_view(['POST'])
 def sign_in(request):
     username = request.data.get('username')
@@ -69,21 +70,11 @@ def sign_in(request):
         return Response({"error": "Both username and password are required"},
                         status=status.HTTP_400_BAD_REQUEST)
 
-    try:
-        user = User.objects.get(username=username)
-        
-        if check_password(password, user.password):
-            login(request, user)
-            user.last_login = timezone.now()
-            user.save()
-            serializer = UserSerializer(user)
-            session_key = request.COOKIES.get('sessionid')
-            print("session_key: ", session_key)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response({"error": "Invalid password"}, status=status.HTTP_400_BAD_REQUEST)
-
-    except User.DoesNotExist:
-        return Response({"error": "User does not exist"}, status=status.HTTP_400_BAD_REQUEST)
-
-
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)  # ustawia sesję Django
+        serializer = UserSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+        return Response({"error": "Invalid username or password"},
+                        status=status.HTTP_400_BAD_REQUEST)
