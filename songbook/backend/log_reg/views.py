@@ -44,7 +44,11 @@ def sign_up(request):
         return Response({"error": "Password and confirm password do not match!"}, status=status.HTTP_400_BAD_REQUEST)
 
     # * Update request data
-    user_data = request.data.copy()
+    user_data = User.objects.create(
+       email=request.data.get('e_mail'),
+       username=request.data.get('username'),
+       password = make_password(request.data.get('password'))
+    )
 
     print("User data before serialization:", user_data)
 
